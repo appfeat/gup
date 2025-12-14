@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gup"
+name = "gitgo"
 version = "1.0.0"
 description = "A safe Git commit, versioning, and push helper with AI-assisted messages"
 readme = "README.md"
@@ -24,12 +24,12 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/appfeat/gup"
-Repository = "https://github.com/appfeat/gup"
-Issues = "https://github.com/appfeat/gup/issues"
+Homepage = "https://github.com/appfeat/gitgo"
+Repository = "https://github.com/appfeat/gitgo"
+Issues = "https://github.com/appfeat/gitgo/issues"
 
 [project.scripts]
-gup = "gup.__main__:main"
+gitgo = "gitgo.__main__:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

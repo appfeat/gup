@@ -1,4 +1,4 @@
-import gup.__main__ as gup
+import gitgo.__main__ as gitgo
 import subprocess
 import time
 
@@ -17,8 +17,8 @@ class FakeProc:
 
 def test_wait_with_countdown_completes():
     proc = FakeProc(finish_after=1)
-    assert gup.wait_with_countdown(proc, timeout=3)
+    assert gitgo.wait_with_countdown(proc, timeout=3)
 
 def test_wait_with_countdown_times_out():
     proc = FakeProc(finish_after=10)
-    assert not gup.wait_with_countdown(proc, timeout=1)
+    assert not gitgo.wait_with_countdown(proc, timeout=1)

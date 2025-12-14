@@ -1,6 +1,6 @@
-# gup Release 0.1.0
+# gitgo Release 1.0.0
 
-**gup** (Git Update & Push) is a command-line tool that helps you commit, version, and push Git
+**gitgo** is a command-line tool that helps you commit, version, and push Git
 changes safely, with a clear review step and optional AI-assisted commit
 messages.
 
@@ -19,13 +19,13 @@ Many Git workflows break down at the same points:
 - version tags are forgotten or misnumbered
 - pushes happen without a final review
 
-gup turns these scattered steps into a **single, guided release flow**.
+gitgo turns these scattered steps into a **single, guided release flow**.
 
 ---
 
-## What gup does
+## What gitgo does
 
-When run inside a Git repository, `gup`:
+When run inside a Git repository, `gitgo`:
 
 - stages current changes
 - proposes a clear commit message (optionally AI-assisted)
@@ -39,7 +39,7 @@ Every step is visible. Nothing happens without confirmation.
 
 ---
 
-## Why gup is different
+## Why gitgo is different
 
 gup is intentionally conservative.
 
@@ -67,11 +67,11 @@ It favors **clarity over cleverness** and **review over speed**.
 
 Install gup as a standard CLI tool:
 
-    git clone git@github.com:appfeat/gup.git
-    cd gup 
+    git clone git@github.com:appfeat/gitgo.git
+    cd gitgo 
     pip install .
 
-After installation, the `gup` command will be available on your PATH.
+After installation, the `gitgo` command will be available on your PATH.
 
 ---
 
@@ -79,11 +79,13 @@ After installation, the `gup` command will be available on your PATH.
 
 From inside a Git repository:
 
-    gup
+    gitgo
+OR
+    python -m gitgo
 
 That’s the entire interface.
 
-gup will guide you through:
+gitgo will guide you through:
 - identity confirmation (if needed)
 - model selection (first run only)
 - commit message review
@@ -93,10 +95,10 @@ gup will guide you through:
 
 ## Configuration
 
-gup stores its settings in Git config:
+gitgo stores its settings in Git config:
 
-- `gup.model`   – selected LLM model
-- `gup.timeout` – AI request timeout (seconds)
+- `gitgo.model`   – selected LLM model
+- `gitgo.timeout` – AI request timeout (seconds)
 
 These settings are repository-local and do not affect other projects.
 
@@ -113,7 +115,7 @@ These settings are repository-local and do not affect other projects.
 
 ## Philosophy
 
-gup is designed around a simple idea:
+gitgo is designed around a simple idea:
 
 > Finishing work should feel deliberate, not rushed.
 

@@ -1,5 +1,5 @@
-import gup.__main__ as gup
-import gup.__main__ as impl
+import gitgo.__main__ as gitgo
+import gitgo.__main__ as impl
 
 def test_list_llm_models(monkeypatch):
     fake_output = """
@@ -11,7 +11,7 @@ invalid model name
 
     monkeypatch.setattr(impl, "safe", lambda _: fake_output)
 
-    models = gup.list_llm_models()
+    models = gitgo.list_llm_models()
     ids = [m["id"] for m in models]
 
     assert "gpt-4.1" in ids

@@ -1,2 +1,0 @@
-[console_scripts]
-gup = gup.__main__:main
