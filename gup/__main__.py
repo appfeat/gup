@@ -41,7 +41,7 @@ def warn(msg): print(f"{YELLOW}{msg}{RESET}")
 def success(msg): print(f"{GREEN}{msg}{RESET}")
 
 # ==========================================================
-# safe execution (UNCHANGED)
+# safe execution
 # ==========================================================
 def run(argv, capture=False, env=None, timeout=None):
     if capture:
@@ -55,7 +55,7 @@ def safe(argv):
         return ""
 
 # ==========================================================
-# validation (UNCHANGED)
+# validation
 # ==========================================================
 def is_printable_no_space(s):
     return s and all(c in string.printable and not c.isspace() for c in s)
@@ -68,7 +68,7 @@ def clamp_timeout(val, default="12"):
         return default
 
 # ==========================================================
-# git helpers (UNCHANGED)
+# git helpers
 # ==========================================================
 def has_commits():
     return bool(safe(["git", "rev-parse", "--verify", "HEAD"]))
@@ -92,7 +92,7 @@ def next_free_version(major, minor, patch):
         patch += 1
 
 # ==========================================================
-# summary enforcement (UNCHANGED)
+# summary enforcement
 # ==========================================================
 def enforce_summary_limit(msg, limit=72):
     lines = msg.strip().splitlines()
@@ -108,7 +108,7 @@ def enforce_summary_limit(msg, limit=72):
     return "\n".join(lines)
 
 # ==========================================================
-# identity (UNCHANGED)
+# identity
 # ==========================================================
 def read_identity():
     n = git_config("user.name")
@@ -129,7 +129,7 @@ def prompt_identity(n, e):
     )
 
 # ==========================================================
-# dashboard (COSMETIC ONLY)
+# dashboard (cosmetic)
 # ==========================================================
 def show_repo_dashboard():
     name, email, source = read_identity()
@@ -175,7 +175,7 @@ def show_repo_dashboard():
     print(SEP)
 
 # ==========================================================
-# models (UNCHANGED LOGIC)
+# models
 # ==========================================================
 def list_llm_models():
     out = safe(["llm", "models"])
@@ -208,7 +208,7 @@ def pick_model(models):
     return models[0]
 
 # ==========================================================
-# countdown helper (COSMETIC ONLY)
+# countdown helper
 # ==========================================================
 def wait_with_countdown(proc, timeout):
     remaining = int(timeout)
@@ -222,12 +222,34 @@ def wait_with_countdown(proc, timeout):
     return False
 
 # ==========================================================
-# MAIN EXECUTION
+# MAIN
 # ==========================================================
 def main():
     if safe(["git", "rev-parse", "--is-inside-work-tree"]) != "true":
         warn("Not inside a Git repository.")
         sys.exit(1)
+
+    # --- NEW: ensure local branch is up to date ---
+    branch = safe(["git", "branch", "--show-current"])
+    upstream = safe(["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
+
+    if branch and upstream:
+        run(["git", "fetch", "--quiet"])
+        behind = safe(["git", "rev-list", "--count", f"{branch}..{upstream}"])
+        if behind.isdigit() and int(behind) > 0:
+            warn(f"Local branch is behind {upstream} by {behind} commit(s).")
+            c = input(f"{BLUE}Fetch and fast-forward before continuing? [y/N]: {RESET}").strip().lower()
+            if c == "y":
+                try:
+                    run(["git", "merge", "--ff-only", upstream])
+                    success("Repository updated from remote.")
+                except Exception:
+                    warn("Fast-forward failed. Resolve manually and re-run gup.")
+                    sys.exit(1)
+            else:
+                warn("Aborted due to out-of-date branch.")
+                sys.exit(1)
+    # --- END NEW LOGIC ---
 
     bootstrap = not has_commits()
 
