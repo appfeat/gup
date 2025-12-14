@@ -447,7 +447,11 @@ Timestamp: {ts}
 """
 
     subprocess.check_call(["git", "commit", "-m", final_msg], env=env)
-    subprocess.check_call(["git", "tag", "-a", next_version, "-m", final_msg])
+    subprocess.check_call(
+        ["git", "tag", "-a", next_version, "-m", final_msg],
+        env=env
+    )
+
 
     branch = safe(["git", "branch", "--show-current"]) or "main"
     run(["git", "push", "-u", "origin", branch])
