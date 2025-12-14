@@ -231,6 +231,38 @@ def wait_with_countdown(proc, timeout):
 # MAIN
 # ==========================================================
 def main():
+    if any(a in ("-h", "--help") for a in sys.argv[1:]):
+        print("""
+    gup — Guided Universal Push
+
+    An interactive Git release assistant that:
+    - stages changes
+    - generates or accepts commit messages
+    - manages version tags
+    - pushes commits and tags safely
+
+    Usage:
+      gup
+
+    Configuration (stored per-repo via git config):
+      gup.model          Preferred AI model (if llm is installed)
+      gup.timeout        AI timeout in seconds
+      gup.message-mode   ai | manual
+
+    Notes:
+    - Run inside a Git repository
+    - AI features require: pip install llm
+    - No flags are required or expected
+
+    Project:
+      https://github.com/appfeat/gup
+    """.strip())
+        sys.exit(0)
+
+
+
+
+
     if safe(["git", "rev-parse", "--is-inside-work-tree"]) != "true":
         warn("Not inside a Git repository.")
         sys.exit(1)
