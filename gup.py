@@ -5,6 +5,7 @@ import os
 import re
 import datetime
 import string
+import time
 
 # ==========================================================
 # TRON COLOR THEME (COSMETIC ONLY)
@@ -207,6 +208,20 @@ def pick_model(models):
     return models[0]
 
 # ==========================================================
+# countdown helper (COSMETIC ONLY)
+# ==========================================================
+def wait_with_countdown(proc, timeout):
+    remaining = int(timeout)
+    while remaining > 0:
+        if proc.poll() is not None:
+            return True
+        msg = f"{CYAN}AI generating commit message… {remaining}s remaining{RESET}"
+        print(f"\r{msg:<80}", end="", flush=True)
+        time.sleep(1)
+        remaining -= 1
+    return False
+
+# ==========================================================
 # repo check (UNCHANGED)
 # ==========================================================
 if safe(["git", "rev-parse", "--is-inside-work-tree"]) != "true":
@@ -247,7 +262,7 @@ if not files:
     sys.exit(0)
 
 # ==========================================================
-# model + timeout (UNCHANGED + RESTORED LATER)
+# model + timeout (UNCHANGED)
 # ==========================================================
 models = list_llm_models()
 model_id = git_config("gup.model")
@@ -259,7 +274,7 @@ if not model:
     git_config_set("gup.model", model["id"])
 
 # ==========================================================
-# commit message generation (UNCHANGED)
+# commit message generation (WITH COUNTDOWN)
 # ==========================================================
 commit_msg = (
     "Initial commit" if bootstrap else
@@ -288,12 +303,19 @@ Diff:
             stderr=subprocess.PIPE,
             text=True
         )
-        out, err = p.communicate(timeout=int(timeout))
+
+        completed = wait_with_countdown(p, timeout)
+        print("\r" + " " * 80 + "\r", end="", flush=True)
+
+        if not completed:
+            p.kill()
+            return commit_msg, "AI request timed out"
+
+        out, err = p.communicate()
         if out.strip():
             return enforce_summary_limit(out.strip()), None
         return commit_msg, err.strip() or "AI returned empty output"
-    except subprocess.TimeoutExpired:
-        return commit_msg, "AI request timed out"
+
     except Exception as e:
         return commit_msg, str(e)
 
@@ -305,7 +327,7 @@ if ai_warning:
     warn(f"Model: {model['id']} | Timeout: {timeout}s\n")
 
 # ==========================================================
-# review loop (RESTORED OPTION)
+# review loop (UNCHANGED + RESTORED)
 # ==========================================================
 while True:
     header("GUP :: REVIEW")
