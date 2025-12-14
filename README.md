@@ -1,59 +1,75 @@
 # gup
 
-**gup** is a conservative Git helper that stages changes, generates a high-quality
-commit message using an LLM, versions the release, tags it, and pushes safely —
-all with an explicit human review step.
+**gup** is a command-line tool that helps you commit, version, and push Git
+changes safely, with a clear review step and optional AI-assisted commit
+messages.
 
-It is designed to be fast, predictable, and hard to misuse.
+If you often forget to write good commit messages, tag releases consistently,
+or want a single, predictable command to finalize your work, gup is designed
+for you.
+
+---
+
+## What problem does gup solve?
+
+Many Git workflows break down at the same points:
+
+- changes pile up without commits
+- commit messages are rushed or inconsistent
+- version tags are forgotten or misnumbered
+- pushes happen without a final review
+
+gup turns these scattered steps into a **single, guided release flow**.
 
 ---
 
 ## What gup does
 
-When you run `gup` inside a Git repository, it:
+When run inside a Git repository, `gup`:
 
 - stages current changes
-- generates a concise commit message (AI-assisted)
-- enforces a ≤72-character summary line
-- proposes the next semantic version tag
-- lets you review and edit everything
+- proposes a clear commit message (optionally AI-assisted)
+- enforces a clean, ≤72-character summary line
+- determines the next version tag automatically
+- shows a full review screen before committing
 - creates the commit and annotated tag
-- pushes the commit and tag to the remote
+- pushes both to the configured remote
 
-Nothing happens without your confirmation.
+Every step is visible. Nothing happens without confirmation.
+
+---
+
+## Why gup is different
+
+gup is intentionally conservative.
+
+- No history rewriting
+- No hidden automation
+- No background hooks
+- No silent commits
+
+It favors **clarity over cleverness** and **review over speed**.
 
 ---
 
 ## Requirements
 
-- Python ≥ 3.9
+- Python 3.9 or newer
 - Git
-- The `llm` CLI installed and configured with at least one model
+- The `llm` CLI installed and configured (for AI commit messages)
 - A non-bare Git repository
 
 ---
 
 ## Installation
 
-### Recommended: pip
+### Using pip (recommended)
 
-This installs `gup` as a command available on your PATH.
+Install gup as a standard CLI tool:
 
     pip install gup
 
-After installation, verify:
-
-    gup
-
----
-
-### Alternative: run without installing
-
-From a cloned repository:
-
-    python -m gup
-
-This is useful for development or testing.
+After installation, the `gup` command will be available on your PATH.
 
 ---
 
@@ -63,10 +79,10 @@ From inside a Git repository:
 
     gup
 
-That’s it.
+That’s the entire interface.
 
-You will be guided through:
-- identity confirmation
+gup will guide you through:
+- identity confirmation (if needed)
 - model selection (first run only)
 - commit message review
 - release confirmation
@@ -75,7 +91,7 @@ You will be guided through:
 
 ## Configuration
 
-gup stores configuration in Git config:
+gup stores its settings in Git config:
 
 - `gup.model`   – selected LLM model
 - `gup.timeout` – AI request timeout (seconds)
@@ -84,25 +100,22 @@ These settings are repository-local and do not affect other projects.
 
 ---
 
-## Safety guarantees
+## Typical use cases
 
-- gup will **not** commit if there are no staged changes
-- gup will **not** rewrite history
-- gup enforces timeouts on AI calls
-- `import gup` has no side effects
-- all commits and tags are explicit and reviewable
+- finishing a feature and creating a clean release commit
+- maintaining consistent version tags
+- solo development with better commit hygiene
+- small teams that want predictable Git history
 
 ---
 
 ## Philosophy
 
-gup favors:
-- boring defaults
-- visible state
-- explicit confirmation
-- small, reversible actions
+gup is designed around a simple idea:
 
-It is opinionated, deliberately.
+> Finishing work should feel deliberate, not rushed.
+
+It aims to make the *last step* of development calm, reviewable, and reliable.
 
 ---
 
