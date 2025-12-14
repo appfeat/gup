@@ -8,7 +8,7 @@ import datetime
 # ==========================================================
 # CONFIGURATION
 # ==========================================================
-DEFAULT_MODEL = "gpt-4o-mini"   # Change to e.g. "gemini/gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-2.5-flash"   # Change to e.g. "gemini/gemini-2.5-flash"
 DEBUG_AI = True                 # Prints stderr from llm if True
 
 # ==========================================================
