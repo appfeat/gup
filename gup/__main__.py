@@ -233,7 +233,7 @@ def wait_with_countdown(proc, timeout):
 def main():
     if any(a in ("-h", "--help") for a in sys.argv[1:]):
         print("""
-    gup — Guided Universal Push
+    gup — Git Update & Push
 
     An interactive Git release assistant that:
     - stages changes
