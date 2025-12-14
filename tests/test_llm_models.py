@@ -1,4 +1,4 @@
-import gup
+import gup.__main__ as gup
 import gup.__main__ as impl
 
 def test_list_llm_models(monkeypatch):

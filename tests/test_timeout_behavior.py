@@ -1,4 +1,4 @@
-import gup
+import gup.__main__ as gup
 import subprocess
 import time
 

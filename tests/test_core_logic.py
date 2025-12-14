@@ -1,4 +1,4 @@
-import gup
+import gup.__main__ as gup
 
 def test_clamp_timeout_valid():
     assert gup.clamp_timeout("10") == "10"
